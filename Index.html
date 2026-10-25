@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07111f">
+
+  <title>Fútbol en Directo | Partidos y resultados</title>
+
+  <meta name="description"
+    content="Consulta el calendario de fútbol, las principales ligas europeas y los próximos partidos.">
+
+  <style>
+    :root {
+      --background: #07111f;
+      --panel: #101d30;
+      --panel-light: #17263c;
+      --text: #f4f7fb;
+      --muted: #9cacc1;
+      --green: #36e69a;
+      --border: #26374d;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Arial, sans-serif;
+    }
+
+    header {
+      padding: 24px 18px;
+      background: linear-gradient(135deg, #102a43, #07111f);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      background: var(--green);
+      color: #07111f;
+      border-radius: 14px;
+      font-size: 25px;
+      font-weight: 900;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 23px;
+    }
+
+    .subtitle {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    main {
+      padding: 20px 14px 40px;
+    }
+
+    .hero {
+      padding: 23px 18px;
+      background: linear-gradient(135deg, #153b42, #10263a);
+      border: 1px solid #28514e;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .hero h2 {
+      margin: 0 0 9px;
+      font-size: 26px;
+    }
+
+    .hero p {
+      margin: 0;
+      color: #c3d5df;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 19px;
+      margin: 25px 0 14px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 9px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    button, select {
+      font: inherit;
+    }
+
+    .filter {
+      flex-shrink: 0;
+      padding: 10px 15px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      color: var(--text);
+      background: var(--panel);
+      cursor: pointer;
+    }
+
+    .filter.active {
+      color: #07111f;
+      background: var(--green);
+      border-color: var(--green);
+      font-weight: 700;
+    }
+
+    .league-select {
+      width: 100%;
+      padding: 13px;
+      margin-bottom: 18px;
+      color: var(--text);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .match {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 17px;
+      margin-bottom: 12px;
+    }
+
+    .match-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 18px;
+    }
+
+    .league {
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .teams {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 8px;
+      text-align: center;
+    }
+
+    .team {
+      font-size: 14px;
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+
+    .score {
+      font-size: 23px;
+      font-weight: 800;
+    }
+
+    .status {
+      display: block;
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .notice {
+      padding: 13px;
+      margin: 20px 0;
+      border: 1px solid #69552c;
+      background: #292519;
+      border-radius: 12px;
+      color: #f2dca4;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .empty {
+      color: var(--muted);
+      text-align: center;
+      padding: 25px 10px;
+    }
+
+    footer {
+      padding: 25px 18px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    @media (min-width: 650px) {
+      main {
+        padding: 30px 20px 50px;
+      }
+
+      .matches-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .match {
+        margin-bottom: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container brand">
+      <div class="logo">F</div>
+      <div>
+        <h1>FÚTBOL EN DIRECTO</h1>
+        <p class="subtitle">Tu pasión. Todas las ligas.</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="hero">
+      <h2>El fútbol, en un solo lugar ⚽</h2>
+      <p>
+        Consulta los encuentros, explora las grandes ligas europeas
+        y descubre los próximos partidos.
+      </p>
+    </section>
+
+    <h2 class="section-title">Partidos</h2>
+
+    <div class="filters" aria-label="Filtrar partidos">
+      <button class="filter active" data-status="all">Todos</button>
+      <button class="filter" data-status="live">En directo</button>
+      <button class="filter" data-status="upcoming">Próximos</button>
+    </div>
+
+    <label for="leagueSelect" class="subtitle">
+      Selecciona una competición
+    </label>
+
+    <select id="leagueSelect" class="league-select">
+      <option value="all">Todas las ligas</option>
+      <option value="LaLiga">LaLiga · España</option>
+      <option value="Premier League">Premier League · Inglaterra</option>
+      <option value="Serie A">Serie A · Italia</option>
+      <option value="Bundesliga">Bundesliga · Alemania</option>
+      <option value="Ligue 1">Ligue 1 · Francia</option>
+    </select>
+
+    <div class="notice">
+      VERSIÓN DE PRUEBA: los partidos que aparecen a continuación
+      son ejemplos ficticios para probar el diseño. No son resultados
+      reales ni se actualizan automáticamente todavía.
+    </div>
+
+    <div id="matches" class="matches-grid" aria-live="polite"></div>
+
+  </main>
+
+  <footer>
+    <p>Fútbol en Directo · Proyecto independiente</p>
+    <p>
+      Los horarios, resultados y competiciones reales se incorporarán
+      cuando conectemos una fuente de datos autorizada.
+    </p>
+  </footer>
+
+  <script>
+    // DATOS FICTICIOS: solo sirven para probar el diseño.
+    const demoMatches = [
+      {
+        league: "LaLiga",
+        home: "Equipo local",
+        away: "Equipo visitante",
+        time: "18:00",
+        status: "upcoming",
+        score: "-"
+      },
+      {
+        league: "Premier League",
+        home: "Equipo local",
+        away: "Equipo visitante",
+        time: "20:00",
+        status: "upcoming",
+        score: "-"
+      },
+      {
+        league: "Serie A",
+        home: "Equipo local",
+        away: "Equipo visitante",
+        time: "19:45",
+        status: "upcoming",
+        score: "-"
+      },
+      {
+        league: "Bundesliga",
+        home: "Equipo local",
+        away: "Equipo visitante",
+        time: "17:30",
+        status: "upcoming",
+        score: "-"
+      },
+      {
+        league: "Ligue 1",
+        home: "Equipo local",
+        away: "Equipo visitante",
+        time: "21:00",
+        status: "upcoming",
+        score: "-"
+      }
+    ];
+
+    let selectedStatus = "all";
+
+    const matchesContainer = document.getElementById("matches");
+    const leagueSelect = document.getElementById("leagueSelect");
+
+    function renderMatches() {
+      const selectedLeague = leagueSelect.value;
+
+      const filtered = demoMatches.filter(match => {
+        const leagueMatches =
+          selectedLeague === "all" ||
+          match.league === selectedLeague;
+
+        const statusMatches =
+          selectedStatus === "all" ||
+          match.status === selectedStatus;
+
+        return leagueMatches && statusMatches;
+      });
+
+      if (filtered.length === 0) {
+        matchesContainer.innerHTML =
+          '<p class="empty">No hay partidos de demostración para este filtro.</p>';
+        return;
+      }
+
+      matchesContainer.innerHTML = filtered.map(match => `
+        <article class="match">
+          <div class="match-top">
+            <span class="league">${match.league}</span>
+            <span>${match.time}</span>
+          </div>
+
+          <div class="teams">
+            <div class="team">${match.home}</div>
+
+            <div class="score">
+              ${match.score}
+              <span class="status">
+                ${match.status === "live" ? "En directo" : "Próximamente"}
+              </span>
+            </div>
+
+            <div class="team">${match.away}</div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    document.querySelectorAll(".filter").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".filter").forEach(item => {
+          item.classList.remove("active");
+        });
+
+        button.classList.add("active");
+        selectedStatus = button.dataset.status;
+        renderMatches();
+      });
+    });
+
+    leagueSelect.addEventListener("change", renderMatches);
+
+    renderMatches();
+  </script>
+
+</body>
+</html>
